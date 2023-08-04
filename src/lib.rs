@@ -1,7 +1,11 @@
+//! # minigrep
+//!
+//! `minigrep` is a simple utility for finding lines in a file that contain a given substring
+//
+
 use std::env;
 use std::fs;
 use std::error::Error;
-
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.file_path)?;
@@ -19,6 +23,22 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/// Searches the contents of a string for a substring
+///
+/// # Examples
+///
+/// ```
+/// use minigrep::search;
+///
+/// let contents = "\
+///     my simple string
+///     such an easy thing
+/// ";
+/// let query = "sim";
+/// let answer = search(query, contents);
+///
+/// assert_eq!(vec!["my simple string"], answer);
+/// ```
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     contents
         .lines()
@@ -76,6 +96,17 @@ safe, fast, productive.
 Pick three.
 Dust tape";
         assert_eq!(vec!["safe, fast, productive."], search(query, contents));
+    }
+
+    #[test]
+    fn simple_string() {
+        let query = "sim";
+        let contents = "\
+my simple string
+safe, fast, productive.
+Pick three.
+Dust tape";
+        assert_eq!(vec!["my simple string"], search(query, contents));
     }
 
     #[test]
